@@ -16,7 +16,7 @@ from typing import Any, Optional
 
 import requests
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 API = os.environ.get("WHITETAPE_API", "https://api.whitetape.io").rstrip("/")
 TRADES = ("roofing", "hvac", "plumbing", "electrical", "solar", "pool", "fence", "demolition", "new_construction", "remodel", "windows_doors", "garage_adu", "fire")
 NETWORK = "eip155:8453"   # Base mainnet, USDC

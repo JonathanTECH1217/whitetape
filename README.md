@@ -67,3 +67,5 @@ whitetape rows --state MD --trade roofing --since 0
 https://whitetape.io/schema.json. Trades: roofing, hvac, plumbing, electrical, solar, pool, fence, demolition, new_construction, remodel, windows_doors, garage_adu, fire.
 
 Built and used by Monarc Build for its home-services clients. Questions: hello@whitetape.io
+
+<!-- mcp-name: io.github.JonathanTECH1217/whitetape -->

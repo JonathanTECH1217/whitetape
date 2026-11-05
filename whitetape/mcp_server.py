@@ -12,7 +12,7 @@ from . import count as _count, permits as _permits, search as _search, PaymentRe
 
 def build():
     from mcp.server.mcpserver import MCPServer
-    server = MCPServer("whitetape", title="White Tape permits", version="0.1.0", website_url="https://whitetape.io",
+    server = MCPServer("whitetape", title="White Tape permits", version="0.1.1", website_url="https://whitetape.io",
                        instructions="Nationwide government-issued building permits in one schema. search is free and lists the areas held. count is free and prices a filter. "
                                     "permits returns rows: the first ten a month are free with nothing asked, after that 7 cents a row from the prepaid link in WHITETAPE_CREDIT (bought by card at whitetape.io/credit/) or the wallet in WHITETAPE_WALLET_KEY. "
                                     "Rows carry the permit, the property, and the contractor; never the homeowner. A fresh permit near a contractor is a lead; the contractor_name on a row is the builder.")
