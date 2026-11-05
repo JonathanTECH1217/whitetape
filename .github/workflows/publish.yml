@@ -1,0 +1,25 @@
+# The release robot: a tag like v0.1.0 builds the package and uploads it to PyPI. Needs the PyPI "trusted publisher" set for this repo
+# (pypi.org, the project, Publishing, GitHub: owner whitetape, repo whitetape, workflow publish.yml) so no token is stored anywhere.
+name: publish
+on:
+  push:
+    tags: ["v*"]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -e . pytest && python -m pytest tests/ -q
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions: { id-token: write, contents: read }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install build && python -m build
+      - uses: pypa/gh-action-pypi-publish@release/v1

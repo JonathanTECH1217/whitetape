@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "whitetape"
+version = "0.1.0"
+description = "Permit data for AI assistants: nationwide government-issued building permits as clean rows in one schema. Search free, ten rows free, then 7 cents a row by wallet (x402). No account, no key."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [{ name = "White Tape", email = "hello@whitetape.io" }]
+keywords = ["permits", "building permits", "public records", "leads", "contractors", "x402", "mcp"]
+classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Topic :: Database"]
+dependencies = ["requests>=2.31"]
+
+[project.optional-dependencies]
+pay = ["x402[evm,requests]>=2.25", "eth-account>=0.13"]
+mcp = ["mcp>=2.0"]
+all = ["x402[evm,requests]>=2.25", "eth-account>=0.13", "mcp>=2.0"]
+
+[project.urls]
+Homepage = "https://whitetape.io"
+Repository = "https://github.com/JonathanTECH1217/whitetape"
+Documentation = "https://whitetape.io/402/"
+Schema = "https://whitetape.io/schema.json"
+
+[project.scripts]
+whitetape = "whitetape.cli:main"
+whitetape-mcp = "whitetape.mcp_server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["whitetape"]
