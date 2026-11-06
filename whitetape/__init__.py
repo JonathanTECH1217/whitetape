@@ -16,8 +16,12 @@ from typing import Any, Optional
 
 import requests
 
-__version__ = "0.1.1"
-API = os.environ.get("WHITETAPE_API", "https://api.whitetape.io").rstrip("/")
+__version__ = "0.1.2"
+# The API address is pinned (review 2026-11-05: an overridable WHITETAPE_API was a path to pay a stranger's 402). An override needs
+# WHITETAPE_API_UNSAFE=1 as well, for a test server you run yourself.
+API = "https://api.whitetape.io"
+if os.environ.get("WHITETAPE_API") and os.environ.get("WHITETAPE_API_UNSAFE") == "1":
+    API = os.environ["WHITETAPE_API"].rstrip("/")
 TRADES = ("roofing", "hvac", "plumbing", "electrical", "solar", "pool", "fence", "demolition", "new_construction", "remodel", "windows_doors", "garage_adu", "fire")
 NETWORK = "eip155:8453"   # Base mainnet, USDC
 
@@ -53,6 +57,17 @@ def session() -> requests.Session:
         client = x402ClientSync().register(NETWORK, scheme).register_v1(NETWORK, scheme)
         cap = float(os.environ.get("WHITETAPE_MAX_USD", "5"))
         client.register_policy(max_amount(int(cap * 1_000_000)))   # USDC has six decimals
+        # and a cap for the whole process (review 2026-11-05: "the spending cap is per call, not cumulative"): WHITETAPE_MAX_USD_TOTAL, default 20.
+        # Once the calls so far would pass it, no further 402 is paid and the call raises PaymentRequired. Use a throwaway wallet holding only what you mean to spend.
+        total = float(os.environ.get("WHITETAPE_MAX_USD_TOTAL", "20")); spent = {"usd": 0.0}
+        def total_cap(version, reqs):
+            out = []
+            for r in reqs:
+                amt = int(r.get_amount()) / 1_000_000
+                if spent["usd"] + amt <= total:
+                    spent["usd"] += amt; out.append(r)
+            return out
+        client.register_policy(total_cap)
         s = wrapRequestsWithPayment(s, client)
     _session = s
     return s

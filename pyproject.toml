@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "whitetape"
-version = "0.1.1"
+version = "0.1.2"
 description = "Permit data for AI assistants: nationwide government-issued building permits as clean rows in one schema. Search free, ten rows free, then 7 cents a row by wallet (x402). No account, no key."
 readme = "README.md"
 license = "MIT"

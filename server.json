@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.JonathanTECH1217/whitetape",
   "description": "US building permits as rows with the contractor of record. Free search; 7 cents a row, no account.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "websiteUrl": "https://whitetape.io",
   "repository": {
     "url": "https://github.com/JonathanTECH1217/whitetape",
@@ -13,7 +13,7 @@
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "whitetape",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "runtimeHint": "uvx",
       "runtimeArguments": [
         {

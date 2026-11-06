@@ -12,9 +12,15 @@ from . import count as _count, permits as _permits, search as _search, PaymentRe
 
 def build():
     from mcp.server.mcpserver import MCPServer
-    server = MCPServer("whitetape", title="White Tape permits", version="0.1.1", website_url="https://whitetape.io",
+    # The MCP server never spends a wallet (review 2026-11-05: an agent in a loop, or a permit description written to steer it, could drain one and
+    # crypto has no chargeback). It pays only from a prepaid link, WHITETAPE_CREDIT, whose balance is the worst case, and serves at most
+    # WHITETAPE_MCP_MAX_ROWS paid rows a session (default 500).
+    import os
+    os.environ.pop("WHITETAPE_WALLET_KEY", None)
+    budget = {"rows": int(os.environ.get("WHITETAPE_MCP_MAX_ROWS", "500"))}
+    server = MCPServer("whitetape", title="White Tape permits", version="0.1.2", website_url="https://whitetape.io",
                        instructions="Nationwide government-issued building permits in one schema. search is free and lists the areas held. count is free and prices a filter. "
-                                    "permits returns rows: the first ten a month are free with nothing asked, after that 7 cents a row from the prepaid link in WHITETAPE_CREDIT (bought by card at whitetape.io/credit/) or the wallet in WHITETAPE_WALLET_KEY. "
+                                    "permits returns rows: the first ten a month are free with nothing asked, after that 7 cents a row from the prepaid link in WHITETAPE_CREDIT (bought by card at whitetape.io/credit/) or never a wallet. "
                                     "Rows carry the permit, the property, and the contractor; never the homeowner. A fresh permit near a contractor is a lead; the contractor_name on a row is the builder.")
 
     @server.tool(description="Free. The areas White Tape holds that match a place name, city, zip, or state, with row counts. Never returns a row.")
@@ -29,6 +35,9 @@ def build():
                              f"Ten rows a month free, then 7 cents a row by wallet. trade is one of: {', '.join(TRADES)}. since: pass 0 the first time, then the answer's next, and no row comes twice.")
     def permits(state: str = "", trade: str = "", jurisdiction_id: str = "", permit_type: str = "", issue_date_from: str = "", issue_date_to: str = "", value_min: Optional[float] = None,
                 since: Optional[str] = None, limit: int = 100) -> Any:
+        if int(limit or 10) > budget["rows"]:
+            return {"error": f"This session has {budget['rows']} paid rows left of its cap (WHITETAPE_MCP_MAX_ROWS). Ask for fewer, or start a new session."}
+        budget["rows"] -= int(limit or 10)
         try:
             return _permits(state=state, trade=trade, jurisdiction_id=jurisdiction_id, permit_type=permit_type, issue_date_from=issue_date_from, issue_date_to=issue_date_to,
                             value_min=value_min, since=since, limit=limit)

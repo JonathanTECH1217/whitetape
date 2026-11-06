@@ -41,7 +41,7 @@ class Door(BaseHTTPRequestHandler):
 def door():
     srv = HTTPServer(("127.0.0.1", 0), Door)
     t = threading.Thread(target=srv.serve_forever, daemon=True); t.start()
-    os.environ["WHITETAPE_API"] = f"http://127.0.0.1:{srv.server_port}"
+    os.environ["WHITETAPE_API"] = f"http://127.0.0.1:{srv.server_port}"; os.environ["WHITETAPE_API_UNSAFE"] = "1"   # the address is pinned unless this is set (0.1.2)
     import importlib, whitetape
     importlib.reload(whitetape)
     yield whitetape
