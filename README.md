@@ -71,6 +71,6 @@ Built and used by Monarc Build for its home-services clients. Questions: hello@w
 
 ## Who is behind it
 
-Monarc Build, LLC, Annapolis, Maryland, doing business as White Tape; Jonathan Beach, founder. Terms: https://whitetape.io/terms/. Privacy: https://whitetape.io/privacy/. Rows never carry the homeowner's or the applicant's name, and an owner-builder permit, where the homeowner is the contractor of record, is never sold. Calling the contractors on the rows is on you: follow the telemarketing and do-not-call rules where you call.
+Monarc Build, LLC, Annapolis, Maryland, doing business as White Tape. Terms: https://whitetape.io/terms/. Privacy: https://whitetape.io/privacy/. Rows never carry the homeowner's or the applicant's name, and an owner-builder permit, where the homeowner is the contractor of record, is never sold. Calling the contractors on the rows is on you: follow the telemarketing and do-not-call rules where you call.
 
 <!-- mcp-name: io.github.JonathanTECH1217/whitetape -->
